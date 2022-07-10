@@ -2,20 +2,7 @@ import sys
 import subprocess
 
 
-def ask_user(question):
-    while True:
-        print(question)
-        answer = input("Continue? (y/N)")
-        if any(answer.lower() == r for r in ['y']):
-            remove_all_docker_containers()
-            break
-        elif any(answer.lower() == r for r in ['n', '']):
-            break
-        else:
-            print("Please enter 'y' or 'n' ")
-
-
-def remove_all_docker_containers():
+def remove_containers():
     print("Removing all docker containers.")
     try:
         subprocess.run(
@@ -43,4 +30,14 @@ def remove_all_docker_containers():
         sys.exit()
 
 
-ask_user("All of your docker containers on your host will be removed.")
+def ask_user():
+    while True:
+        print("All of your docker containers on your host will be removed.")
+        answer = input("Continue? (y/N)")
+        if any(answer.lower() == f for f in ['y']):
+            remove_containers()
+            break
+        elif any(answer.lower() == f for f in ['n', '']):
+            break
+        else:
+            print("Please enter 'y' or 'n' ")
