@@ -41,3 +41,6 @@ def ask_user():
             break
         else:
             print("Please enter 'y' or 'n' ")
+
+
+ask_user()
