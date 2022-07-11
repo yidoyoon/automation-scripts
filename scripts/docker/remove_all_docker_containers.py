@@ -43,4 +43,5 @@ def ask_user():
             print("Please enter 'y' or 'n' ")
 
 
-ask_user()
+if __name__ == '__main__':
+    ask_user()
