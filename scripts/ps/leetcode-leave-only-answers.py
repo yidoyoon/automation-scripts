@@ -1,12 +1,10 @@
-import sys
-
-file_name = sys.argv[1]
+from pathlib2 import Path
 
 begin = "//leetcode submit region begin(Prohibit modification and deletion)"
 end = "//leetcode submit region end(Prohibit modification and deletion)"
 
 
-def leave_only_solution(file_name) -> None:
+def trim_solution(file_name) -> None:
     """Remove automatically generated annotations when you use
     `Leetcode Editor` plugin(https://github.com/shuzijun/leetcode-editor)
     in Jetbrains IDE. It deletes the first line including the top comment,
@@ -29,4 +27,5 @@ def leave_only_solution(file_name) -> None:
 
 
 if __name__ == '__main__':
-    leave_only_solution(file_name)
+    for path in Path.cwd().rglob('*.cpp'):
+        trim_solution(path)
