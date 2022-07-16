@@ -1,6 +1,4 @@
-import sys
-
-file_name = sys.argv[1]
+from pathlib2 import Path
 
 begin = "//leetcode submit region begin(Prohibit modification and deletion)"
 end = "//leetcode submit region end(Prohibit modification and deletion)"
@@ -29,4 +27,5 @@ def leave_only_solution(file_name) -> None:
 
 
 if __name__ == '__main__':
-    leave_only_solution(file_name)
+    for path in Path.cwd().rglob('*.cpp'):
+        leave_only_solution(path)
