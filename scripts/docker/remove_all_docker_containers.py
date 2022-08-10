@@ -4,6 +4,18 @@ import sys
 import click
 
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
 @click.command()
 @click.option('--action', prompt="You can choose 'stop' or 'remove'",
               help="""stop: Stops all running docker containers.\
@@ -15,9 +27,16 @@ def ask_user(action):
     elif action == 'remove':
         action = 'removed'
 
+    running, not_running = count_container()
+
     while True:
-        print(f"All of your docker containers on your host will be {action}.")
-        answer = input("Continue? (y/N)")
+        print("----------------------------------------------------------")
+        print(f"Running Containers: {bcolors.OKGREEN}{running}{bcolors.ENDC}\n"
+              f"Not running containers: {bcolors.FAIL}{not_running}{bcolors.ENDC}")
+        print(f"All of these containers on your system will be "
+              f"{bcolors.BOLD}{action}{bcolors.ENDC}.")
+        print("----------------------------------------------------------")
+        answer = input("Continue? (y/N):\n")
         if any(answer.lower() == f for f in ['y']):
             if action == 'stopped':
                 stop_containers()
@@ -28,6 +47,22 @@ def ask_user(action):
             sys.exit()
         else:
             print("Please enter 'y' or 'n'")
+
+
+def count_container():
+    status_running = subprocess.run(
+        "docker ps -q | wc -l",
+        shell=True,
+        stdout=subprocess.PIPE
+    ).stdout
+
+    status_any = subprocess.run(
+        "docker ps -aq | wc -l",
+        shell=True,
+        stdout=subprocess.PIPE
+    ).stdout
+
+    return int(status_running), int(status_any) - int(status_running)
 
 
 def stop_containers():
