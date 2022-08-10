@@ -6,7 +6,7 @@ import click
 
 @click.command()
 @click.option('--action', prompt="You can choose 'stop' or 'remove'",
-              help="""stop: Stops all running docker containers. \
+              help="""stop: Stops all running docker containers.\
               remove: Removes all running docker containers after stop
               These actions are irreversible.""")
 def ask_user(action):
