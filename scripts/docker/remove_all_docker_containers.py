@@ -15,6 +15,8 @@ def ask_user(action):
     elif action == 'remove':
         action = 'removed'
 
+    running, not_running = count_container()
+
     while True:
         print(f"All of your docker containers on your host will be {action}.")
         answer = input("Continue? (y/N)")
@@ -28,6 +30,22 @@ def ask_user(action):
             sys.exit()
         else:
             print("Please enter 'y' or 'n'")
+
+
+def count_container():
+    status_running = subprocess.run(
+        "docker ps -q | wc -l",
+        shell=True,
+        stdout=subprocess.PIPE
+    ).stdout
+
+    status_any = subprocess.run(
+        "docker ps -aq | wc -l",
+        shell=True,
+        stdout=subprocess.PIPE
+    ).stdout
+
+    return int(status_running), int(status_any) - int(status_running)
 
 
 def stop_containers():
